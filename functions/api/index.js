@@ -1,5 +1,5 @@
 export async function onRequest({ request }) {
-    const targetUrl = 'https://www.diving-fish.com/api/maimaidxprober/player';
+    const targetUrl = 'https://www.diving-fish.com/api/maimaidxprober/query/player';
 
     const init = {
         method: request.method,
