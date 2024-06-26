@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$splitPoint: 720px;
+
+.main-container {
+  @apply flex flex-col items-start my-8 px-8 py-4 overflow-x-hidden;
+  width: 100%;
+}
+
+
+@media (min-width: $splitPoint) {
+  .main-container {
+    @apply shadow-lg bg-white rounded-lg;
+    width: $splitPoint;
+  }
+}
+
+.have-bar::before {
+  content: "";
+  @apply inline-block w-2 h-[1em] rounded-full mr-2;
+  vertical-align: middle;
+  background: linear-gradient(180deg, #0e3a9a 0%, #2eabe3 100%);
+}
