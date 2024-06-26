@@ -15,7 +15,7 @@ import Subtitle from "@/components/Subtitle.vue";
 const toast = useToast();
 
 const api = axios.create({
-    baseURL: "https://www.diving-fish.com/api/maimaidxprober/",
+    baseURL: "/api/",
 });
 
 import {
@@ -56,7 +56,7 @@ function fetchB50(username, b50 = true) {
         b50: b50,
     };
 
-    api.post("player", payload)
+    api.post("", payload)
         .then((response) => {
             result = response.data;
             parseResult();
