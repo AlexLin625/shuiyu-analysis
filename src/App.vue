@@ -8,6 +8,12 @@ import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Chart from "primevue/chart";
 import Button from "primevue/button";
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+
 import {useToast} from "primevue/usetoast";
 import Brief from "@/components/Brief.vue";
 import Subtitle from "@/components/Subtitle.vue";
@@ -56,14 +62,14 @@ function fetchB50(username, b50 = true) {
         b50: b50,
     };
 
-    api.post("", payload)
+    api.post("player", payload)
         .then((response) => {
             result = response.data;
             parseResult();
             fetched.value = true;
         })
         .catch((error) => {
-            toast.add({severity: "error", summary: "错误", detail: "查询失败. "});
+            toast.add({severity: "error", summary: "错误", detail: "查询失败. 信息为" + error.message});
         });
 }
 
@@ -160,21 +166,40 @@ function BaselineGraph(type) {
             <Header/>
 
             <div v-if="!fetched" class="w-full flex-col">
-                <div class="flex flex-row w-full items-center justify-between">
-                    <InputText v-model="username" type="text" placeholder="水鱼查分用户名"/>
-                    <div class="flex flex-row items-center">
-                        <Checkbox v-model="queryB50" :binary="true"></Checkbox>
-                        <p class="pl-1 pr-3">仅查询B50</p>
 
-                        <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
-                    </div>
-                </div>
+                <Tabs value="0">
+                    <TabList>
+                        <Tab value="0">仅查询B50</Tab>
+                        <Tab value="1">完整数据</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel value="0">
+                            <div class="flex flex-row w-full items-center justify-between">
+                                <InputText v-model="username" type="text" placeholder="水鱼查分用户名"/>
+                                <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
+                            </div>
 
-                <div class="rounded-lg bg-gray-100 p-2 my-4">
-                    <p class="text-sm text-gray-500 py-1">
-                        如果查询失败，请检查你的用户名以及你的水鱼站隐私设置。
-                    </p>
-                </div>
+                            <div class="rounded-lg bg-gray-100 p-2 my-4">
+                                <p class="text-sm text-gray-500 py-1">
+                                    如果查询失败，请检查你的用户名以及你的水鱼站隐私设置。
+                                </p>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="1">
+                            <div class="rounded-lg bg-gray-100 p-2 my-4">
+                                <p class="text-sm text-gray-500 py-1">
+                                    需要提供Token. 将会提供查询完整游玩记录，并作出更多可视化的功能。
+                                </p>
+
+                                <p class="text-sm text-gray-500 py-1">
+                                    锐意制作中。
+                                </p>
+                            </div>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+
+
             </div>
             <div v-else class="flex flex-col items-start w-full">
                 <Subtitle text="B50概览"/>
@@ -203,6 +228,7 @@ function BaselineGraph(type) {
                         如果吃分线低于97%，图上会显示97%. 如果你不能在此分数档吃分(也就是这些谱面太简单了)，图上会显示为101%.
                     </p>
                 </div>
+                <Button @click="fetched = false" class="w-full my-4">返回</Button>
             </div>
         </div>
     </div>
