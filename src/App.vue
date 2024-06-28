@@ -191,7 +191,7 @@ function BaselineGraph(type) {
 
                             <div class="rounded-lg bg-gray-100 p-2 my-4">
                                 <p class="text-sm text-gray-500 py-1">
-                                    如果查询失败，请检查你的用户名以及你的水鱼站隐私设置。
+                                    如果查询失败，请检查你的用户名以及你的<a href="https://www.diving-fish.com/maimaidx/prober/">水鱼站</a>隐私设置。
                                 </p>
                             </div>
                         </TabPanel>
@@ -239,6 +239,10 @@ function BaselineGraph(type) {
                     </p>
                 </div>
                 <Button @click="fetched = false" class="w-full my-4">返回</Button>
+
+                <p class="text-sm text-gray-500 pt-8">
+                    想提出建议？联系开发者 <a href="mailto:contact@a1exlin.cn">contact@a1exlin.cn</a>.
+                </p>
             </div>
         </div>
     </div>

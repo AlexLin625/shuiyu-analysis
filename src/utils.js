@@ -103,7 +103,7 @@ export function getHistogram(list) {
 export function computeBaseline(bmin) {
     let baseline = [];
     for (let i = 10; i <= 15; i++) {
-        baseline.push(getBaseline(i, bmin));
+        baseline.push(getBaseline(i + 0.2, bmin));
         if (i !== 15) {
             baseline.push(getBaseline(i + 0.7, bmin));
         }
