@@ -23,3 +23,7 @@ $splitPoint: 720px;
   vertical-align: middle;
   background: linear-gradient(180deg, #0e3a9a 0%, #2eabe3 100%);
 }
+
+p > a {
+  @apply text-blue-400 hover:text-blue-500;
+}

@@ -240,7 +240,7 @@ function BaselineGraph(type) {
                 </div>
                 <Button @click="fetched = false" class="w-full my-4">返回</Button>
 
-                <p class="text-sm text-gray-500 pt-8">
+                <p class="text-sm text-gray-400 pt-8 w-full text-center">
                     想提出建议？联系开发者 <a href="mailto:contact@a1exlin.cn">contact@a1exlin.cn</a>.
                 </p>
             </div>
