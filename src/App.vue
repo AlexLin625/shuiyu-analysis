@@ -51,6 +51,15 @@ const baselineOption = {
     }
 };
 
+function logUser() {
+    let payload = {
+        username: username.value,
+        rating: result.rating,
+    };
+
+    api.post("log", payload);
+}
+
 function fetchB50(username, b50 = true) {
     if (username === "") {
         toast.add({severity: "error", summary: "错误", detail: "请输入用户名. "});
@@ -67,6 +76,7 @@ function fetchB50(username, b50 = true) {
             result = response.data;
             parseResult();
             fetched.value = true;
+            logUser();
         })
         .catch((error) => {
             toast.add({severity: "error", summary: "错误", detail: "查询失败. 信息为" + error.message});
