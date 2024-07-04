@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from "axios";
 
 import Toast from "primevue/toast";
@@ -36,6 +36,7 @@ import {
 
 const queryB50 = ref(true);
 const username = ref("");
+const userCount = ref(0);
 
 const fetched = ref(false);
 const briefInfo = ref({});
@@ -58,6 +59,16 @@ function logUser() {
     };
 
     api.post("log", payload);
+}
+
+function getUserCount() {
+    api.get("usercount")
+        .then((response) => {
+            userCount.value = response.data.count;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 function fetchB50(username, b50 = true) {
@@ -166,6 +177,10 @@ function BaselineGraph(type) {
     }
 }
 
+onMounted(() => {
+    getUserCount();
+});
+
 </script>
 
 <template>
@@ -191,7 +206,8 @@ function BaselineGraph(type) {
 
                             <div class="rounded-lg bg-gray-100 p-2 my-4">
                                 <p class="text-sm text-gray-500 py-1">
-                                    如果查询失败，请检查你的用户名以及你的<a href="https://www.diving-fish.com/maimaidx/prober/">水鱼站</a>隐私设置。
+                                    如果查询失败，请检查你的用户名以及你的<a
+                                    href="https://www.diving-fish.com/maimaidx/prober/">水鱼站</a>隐私设置。
                                 </p>
                             </div>
                         </TabPanel>
@@ -209,7 +225,9 @@ function BaselineGraph(type) {
                     </TabPanels>
                 </Tabs>
 
-
+                <p class="text-center text-gray-500 text-sm" v-if="userCount !== 0">
+                    有 {{ userCount }} 位舞萌吃正在使用本站
+                </p>
             </div>
             <div v-else class="flex flex-col items-start w-full">
                 <Subtitle text="B50概览"/>
