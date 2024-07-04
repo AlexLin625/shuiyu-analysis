@@ -62,7 +62,7 @@ function logUser() {
 }
 
 function getUserCount() {
-    api.get("usercount")
+    api.get("count")
         .then((response) => {
             userCount.value = response.data.count;
         })
