@@ -36,6 +36,7 @@ import {
 
 const queryB50 = ref(true);
 const username = ref("");
+const nameHistory = ref("");
 const userCount = ref(0);
 
 const fetched = ref(false);
@@ -81,6 +82,8 @@ function fetchB50(username, b50 = true) {
         username: username,
         b50: b50,
     };
+
+    localStorage.setItem("username", username);
 
     api.post("player", payload)
         .then((response) => {
@@ -179,7 +182,16 @@ function BaselineGraph(type) {
 
 onMounted(() => {
     getUserCount();
+
+    if (localStorage.getItem("username")) {
+        username.value = localStorage.getItem("username");
+        nameHistory.value = localStorage.getItem("username");
+    }
 });
+
+function applyHistoryName() {
+    username.value = nameHistory.value;
+}
 
 </script>
 
@@ -201,6 +213,9 @@ onMounted(() => {
                         <TabPanel value="0">
                             <div class="flex flex-row w-full items-center justify-between">
                                 <InputText v-model="username" type="text" placeholder="水鱼查分用户名"/>
+                                <Button v-if="nameHistory !== ''" @click="applyHistoryName" class="justify-self-end bg-zinc-300">填入
+                                    {{ nameHistory }}
+                                </Button>
                                 <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
                             </div>
 
