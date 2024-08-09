@@ -18,6 +18,8 @@ import {useToast} from "primevue/usetoast";
 import Brief from "@/components/Brief.vue";
 import Subtitle from "@/components/Subtitle.vue";
 
+import Skeleton from 'primevue/skeleton';
+
 const toast = useToast();
 
 const api = axios.create({
@@ -214,7 +216,7 @@ function applyHistoryName() {
                                 <InputText v-model="username" type="text" placeholder="水鱼查分用户名"/>
                                 <div class="flex flex-row items-center justify-end">
                                     <Button v-if="nameHistory !== ''" @click="applyHistoryName"
-                                            class="justify-self-end" severity="info">填入
+                                            class="justify-self-end mx-4" severity="info">填入
                                         {{ nameHistory }}
                                     </Button>
                                     <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
@@ -245,6 +247,7 @@ function applyHistoryName() {
                 <p class="text-center text-gray-500 text-sm" v-if="userCount !== 0">
                     有 {{ userCount }} 位舞萌吃正在使用本站
                 </p>
+                <Skeleton height="1rem" class="w-full" v-else></Skeleton>
             </div>
             <div v-else class="flex flex-col items-start w-full">
                 <Subtitle text="B50概览"/>
