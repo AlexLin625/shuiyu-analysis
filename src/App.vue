@@ -184,7 +184,6 @@ onMounted(() => {
     getUserCount();
 
     if (localStorage.getItem("username")) {
-        username.value = localStorage.getItem("username");
         nameHistory.value = localStorage.getItem("username");
     }
 });
@@ -213,10 +212,13 @@ function applyHistoryName() {
                         <TabPanel value="0">
                             <div class="flex flex-row w-full items-center justify-between">
                                 <InputText v-model="username" type="text" placeholder="水鱼查分用户名"/>
-                                <Button v-if="nameHistory !== ''" @click="applyHistoryName" class="justify-self-end bg-zinc-300">填入
-                                    {{ nameHistory }}
-                                </Button>
-                                <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
+                                <div class="flex flex-row items-center justify-end">
+                                    <Button v-if="nameHistory !== ''" @click="applyHistoryName"
+                                            class="justify-self-end" severity="info">填入
+                                        {{ nameHistory }}
+                                    </Button>
+                                    <Button @click="fetchB50(username, queryB50)" class="justify-self-end">查询</Button>
+                                </div>
                             </div>
 
                             <div class="rounded-lg bg-gray-100 p-2 my-4">
