@@ -111,23 +111,33 @@ export function computeBaseline(bmin) {
     return baseline;
 }
 
-export function getAverageRating(list) {
+export function getLevelStat(list) {
     let hist = [];
     let sum = [];
+    let max_ache = [];
     for (let i = 0; i < 11; i++) {
         hist.push(0);
         sum.push(0);
+        max_ache.push(0);
     }
 
     for (let i = 0; i < list.length; i++) {
         let idx = ds2index(list[i].ds);
         hist[idx]++;
         sum[idx] += list[i].achievements;
+        max_ache[idx] = Math.max(max_ache[idx], list[i].achievements);
     }
 
     for (let i = 0; i < sum.length; i++) {
         sum[i] = sum[i] / hist[i];
     }
 
-    return sum;
+    for (let i = 0; i < sum.length; i++) {
+        max_ache[i] = max_ache[i] - sum[i];
+    }
+
+    return {
+        avg: sum,
+        max: max_ache
+    };
 }

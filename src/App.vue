@@ -30,7 +30,7 @@ import {
     b50labels,
     computeBaseline,
     ds2index,
-    getAverageRating,
+    getLevelStat,
     getBaseline,
     getHistogram,
     minmaxFromList
@@ -47,11 +47,17 @@ let result = null;
 
 const baselineOption = {
     scales: {
+        x: {
+            stacked: true,
+        },
         y: {
             beginAtZero: false,
             min: 90,
             max: 102,
+            stacked: true,
         },
+
+
     }
 };
 
@@ -127,6 +133,11 @@ const accentColor = {
     "dx": "#ee915e",
 }
 
+const borderColor = {
+    "sd": "#0546a8",
+    "dx": "#c9450d",
+}
+
 function HistogramGraph(type) {
     if (!result)
         return {};
@@ -153,7 +164,7 @@ function BaselineGraph(type) {
 
     let data = result.charts[type];
     let labels = b50labels;
-    let avg = getAverageRating(data);
+    let stat = getLevelStat(data);
 
     const lut = {
         "sd": "B35最低Rating",
@@ -169,15 +180,22 @@ function BaselineGraph(type) {
                 type: "line",
                 label: type.toUpperCase() + " 提分基线",
                 data: baselines,
-                borderColor: "#de4316",
+                borderColor: borderColor[type],
                 fill: false,
             },
             {
                 type: "bar",
                 label: type.toUpperCase() + " 平均达成率",
-                data: avg,
+                data: stat.avg,
                 backgroundColor: accentColor[type],
             },
+            {
+                type: "bar",
+                label: type.toUpperCase() + " 最大达成率差",
+                data: stat.max,
+                backgroundColor: "#d2d2d2",
+            },
+
         ],
     }
 }
@@ -254,10 +272,16 @@ function applyHistoryName() {
                 <Brief :briefInfo="briefInfo"/>
 
                 <Subtitle text="分数直方图"/>
-                <Chart type="bar" :data="HistogramGraph('sd')" class="w-full"/>
-                <p class="w-full text-center text-sm text-gray-500 py-2">B35 歌曲难度-数量</p>
-                <Chart type="bar" :data="HistogramGraph('dx')" class="w-full"/>
-                <p class="w-full text-center text-sm text-gray-500 py-2">B15 歌曲难度-数量</p>
+                <div class="w-full flex flex-row justify-between">
+                    <div class="w-1/2 flex flex-col items-center">
+                        <Chart type="bar" :data="HistogramGraph('sd')" class="w-full"/>
+                        <p class="w-full text-center text-sm text-gray-500 py-2">B35 歌曲难度-数量</p>
+                    </div>
+                    <div class="w-1/2 flex flex-col items-center">
+                        <Chart type="bar" :data="HistogramGraph('dx')" class="w-full"/>
+                        <p class="w-full text-center text-sm text-gray-500 py-2">B15 歌曲难度-数量</p>
+                    </div>
+                </div>
 
                 <Subtitle text="提分基线"/>
                 <Chart type="bar" :data="BaselineGraph('sd')" class="w-full" :options="baselineOption"/>
@@ -269,11 +293,13 @@ function applyHistoryName() {
                     <p class="text-sm text-gray-500 py-1">
                         以上定数档中选取的定数规则如下。
                     </p>
-                    <p class="text-sm text-gray-500 py-1">
+                    <p class="text-sm text-gray-500 py-1 px-1">
                         对于整数档，选择x.2 . 对于加号档，选择x.7.
                         例如，对于定数档 12+，选择12.7. 当然，15级只有唯一的15.0.
 
                         如果吃分线低于97%，图上会显示97%. 如果你不能在此分数档吃分(也就是这些谱面太简单了)，图上会显示为101%.
+
+                        灰色柱区域表示平均达成率和最大达成率的差值。
                     </p>
                 </div>
                 <Button @click="fetched = false" class="w-full my-4">返回</Button>
